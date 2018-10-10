@@ -1,6 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
-#include <iostream>
+#include <assert.h>
+#include <stdlib.h>
+#include <time.h>
 
 int middle(int first, int firstIndex, int second, int secondIndex, int third, int thirdIndex)
 {
@@ -71,47 +73,74 @@ void swap(int sortArray[], int index1, int index2)
 	sortArray[index2] = tmp;
 }
 
+void insertionSort(int sortArray[], int left, int rigth)
+{
+	for (int i = left + 1; i <= rigth; ++i)
+	{
+		int sortElement = sortArray[i];
+		int index = i;
+		for (int j = index - 1; j >= left; --j)
+		{
+			if (sortArray[j] <= sortElement)
+			{
+				break;
+			}
+			else
+			{
+				swap(sortArray, j, index);
+				--index;
+			}
+		}
+	}
+}
+
 void quickSort(int length, int sortArray[], int left, int right)
 {
-//	if (length <= 10)
-//	{
-//
-//	}
-//	else
-//	{
-	int supportElementIndex = medianElement(sortArray, left, right);
-/*	if (supportElementIndex < 0)
+	if (length < 10)
 	{
-		if (supportElementIndex == -1)
-		{
-			
-		}
-	}*/
-	int supportElement = sortArray[supportElementIndex];
-	printf("%d\n", supportElement);
-	int indexLeft = left;
-	int indexRight = right;
-	while (indexLeft < indexRight)
-	{
-		while ((sortArray[indexLeft] <= supportElement) && (indexLeft < indexRight))
-		{
-			++indexLeft;
-		}
-		while ((sortArray[indexRight] > supportElement) && (indexLeft < indexRight))
-		{
-			--indexRight;
-		}
-		swap(sortArray, indexLeft, indexRight);
+		insertionSort(sortArray, left, right);
 	}
-
-//	}
+	else
+	{
+		int supportElementIndex = medianElement(sortArray, left, right);
+		if (supportElementIndex >= 0)
+		{
+			int supportElement = sortArray[supportElementIndex];
+			int indexLeft = left;
+			int indexRight = right;
+			while (indexLeft < indexRight)
+			{
+				while ((sortArray[indexLeft] <= supportElement) && (indexLeft < indexRight))
+				{
+					++indexLeft;
+				}
+				while ((sortArray[indexRight] > supportElement) && (indexLeft < indexRight))
+				{
+					--indexRight;
+				}
+				swap(sortArray, indexLeft, indexRight);
+			}
+			int left1 = left;
+			int right1 = indexLeft - 1;
+			int left2 = indexLeft;
+			int right2 = right;
+			int length2 = length - left2;
+			int length1 = length - length2;
+			quickSort(length1, sortArray, left1, right1);
+			quickSort(length2, sortArray, left2, right2);
+		}
+		else
+		{
+			insertionSort(sortArray, left, right);
+		}
+	}
 }
 
 void inputArray(int length, int block[])
 {
 	for (int i = 0; i < length; ++i)
 	{
-		scanf("%d", &block[i]);
+		block[i] = rand() % 200 - 100;
 	}
 }
 
@@ -122,20 +151,50 @@ void outputArray(int length, int block[])
 		printf("%d ", block[i]);
 	}
 }
+//////////////////////////////////////////
+
+void compare(int length, int sortArray[])
+{
+	quickSort(length, sortArray, 0, length - 1);
+	for (int i = 0; i < length - 1; ++i)
+	{
+		assert(sortArray[i] <= sortArray[i + 1]);
+	}
+}
+
+void tests()
+{
+	const int testCount = 20;
+	int testOk = 0;
+	while (testOk < 20)
+	{
+		int length = rand() % 500 + 9;
+		int *sortArray = new int[length] {};
+		inputArray(length, sortArray);
+		compare(length, sortArray);
+		++testOk;
+		delete[] sortArray;
+	}
+}
+
+//////////////////////////////////////////
 
 int main()
 {
-	int length = 0;
-	scanf("%d", &length);
+	printf("Now program is testing, please, wait.\n");
+	tests();
+	printf("Tests are ok!\n");
+	srand(time(nullptr));
+	int length = rand() % 500 + 9;
 	int *sortArray = new int[length] {};
 	inputArray(length, sortArray);
+	printf("Array:\n");
 	outputArray(length, sortArray);
 	printf("\n");
 	int left = 0;
 	int right = length - 1;
 	quickSort(length, sortArray, left, right);
 	outputArray(length, sortArray);
-	printf("\n");
-	system("pause");
+	delete[] sortArray;
 	return 0;
 }
