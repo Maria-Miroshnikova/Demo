@@ -73,9 +73,6 @@ void quickSort(int length, int sortArray[], int left, int right)
 //	else
 //	{
 	int supportElementIndex = medianElement(sortArray, left, right);
-	printf("%d\n", supportElementIndex);
-	printf ("%d\n", sortArray[supportElementIndex]);
-		
 //	}
 }
 
