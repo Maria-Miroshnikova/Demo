@@ -64,6 +64,13 @@ int medianElement(int sortArray[], int left, int right)
 	return middle(firstElement, firstIndex, lastElement, lastIndex, middleElement, middleIndex);
 }
 
+void swap(int sortArray[], int index1, int index2)
+{
+	const int tmp = sortArray[index1];
+	sortArray[index1] = sortArray[index2];
+	sortArray[index2] = tmp;
+}
+
 void quickSort(int length, int sortArray[], int left, int right)
 {
 //	if (length <= 10)
@@ -73,6 +80,30 @@ void quickSort(int length, int sortArray[], int left, int right)
 //	else
 //	{
 	int supportElementIndex = medianElement(sortArray, left, right);
+/*	if (supportElementIndex < 0)
+	{
+		if (supportElementIndex == -1)
+		{
+			
+		}
+	}*/
+	int supportElement = sortArray[supportElementIndex];
+	printf("%d\n", supportElement);
+	int indexLeft = left;
+	int indexRight = right;
+	while (indexLeft < indexRight)
+	{
+		while ((sortArray[indexLeft] <= supportElement) && (indexLeft < indexRight))
+		{
+			++indexLeft;
+		}
+		while ((sortArray[indexRight] > supportElement) && (indexLeft < indexRight))
+		{
+			--indexRight;
+		}
+		swap(sortArray, indexLeft, indexRight);
+	}
+
 //	}
 }
 
@@ -103,6 +134,8 @@ int main()
 	int left = 0;
 	int right = length - 1;
 	quickSort(length, sortArray, left, right);
+	outputArray(length, sortArray);
+	printf("\n");
 	system("pause");
 	return 0;
 }
