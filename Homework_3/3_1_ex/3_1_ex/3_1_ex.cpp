@@ -42,11 +42,11 @@ int medianElement(int sortArray[], int left, int right)
 	if ((middleElement == lastElement) || (middleElement == firstElement))
 	{
 		++sameElementsDetect;
-		for (int i = left + 1; i < right; ++i)
+		for (int i = middleIndex; i < right; ++i)
 		{
 			if ((sortArray[i] != firstElement) && (sortArray[i] != lastElement))
 			{
-				lastElement = sortArray[i];
+				middleElement = sortArray[i];
 				middleIndex = i;
 				++sameElementsFix;
 				break;
@@ -72,8 +72,9 @@ void quickSort(int length, int sortArray[], int left, int right)
 //	}
 //	else
 //	{
-		int supportElementIndex = medianElement(sortArray, left, right);
-		printf ("%d\n", supportElementIndex);
+	int supportElementIndex = medianElement(sortArray, left, right);
+	printf("%d\n", supportElementIndex);
+	printf ("%d\n", sortArray[supportElementIndex]);
 		
 //	}
 }
