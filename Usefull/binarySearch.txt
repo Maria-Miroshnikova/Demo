@@ -1,0 +1,35 @@
+int binarySearch(int sortArray[], int number, int left, int right)
+{
+	if (left == right)
+	{
+		if (sortArray[left] == number)
+		{
+			return left;
+		}
+		else
+		{
+			return -1;
+		}
+	}
+	const int length = right - left + 1;
+	const int indexMiddleElement = (length / 2) + left - 1;
+	if (sortArray[indexMiddleElement] == number)
+	{
+		return indexMiddleElement;
+	}
+	else
+	{
+		if (sortArray[indexMiddleElement] > number)
+		{
+			if (indexMiddleElement == left)
+			{
+				return -1;
+			}
+			return binarySearchEntries(sortArray, number, left, indexMiddleElement - 1);
+		}
+		if (sortArray[indexMiddleElement] < number)
+		{
+			return binarySearchEntries(sortArray, number, indexMiddleElement + 1, right);
+		}
+	}
+}
