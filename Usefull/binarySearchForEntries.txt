@@ -1,0 +1,56 @@
+int binarySearchEntries(PhoneBookEntry phoneBook[], char str[], bool key, int left, int right)
+{
+	printf("key is: %d\n", key);
+	if (left == right)
+	{
+		int isSame = 0;
+		if (key)
+		{
+			printf("name!\n");
+			isSame = compareStr(phoneBook[left].name, str);
+		}
+		else
+		{
+			isSame = compareStr(phoneBook[left].phone, str);
+		}
+		if (isSame == 1)
+		{
+			return left;
+		}
+		else
+		{
+			return -1;
+		}
+	}
+	const int length = right - left + 1;
+	const int indexMiddleElement = (length / 2) + left - 1;
+	int minEntry = -2;
+	if (key)
+	{
+		printf("name!\n");
+		minEntry = compareStr(phoneBook[indexMiddleElement].name, str);
+	}
+	else
+	{
+		minEntry = compareStr(phoneBook[indexMiddleElement].phone, str);
+	}
+	if (minEntry == 1)
+	{
+		return indexMiddleElement;
+	}
+	else
+	{
+		if (minEntry == 3)
+		{
+			if (indexMiddleElement == left)
+			{
+				return -1;
+			}
+			return binarySearchEntries(phoneBook, str, key, left, indexMiddleElement - 1);
+		}
+		else
+		{
+			return binarySearchEntries(phoneBook, str, key, indexMiddleElement + 1, right);
+		}
+	}
+}
